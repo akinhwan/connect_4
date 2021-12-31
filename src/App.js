@@ -81,6 +81,9 @@ function App() {
   };
 
   const restartGame = () => {
+    filledCells.map(
+      (x) => (document.getElementById(x).style.backgroundColor = 'white')
+    );
     setFilledCells([]);
     setBlueCells([]);
     setRedCells([]);
