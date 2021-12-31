@@ -14,20 +14,14 @@ function Cell(props) {
 
   const allCols = [col1, col2, col3, col4, col5, col6, col7];
 
-  // / forward diagonal 8 apart
-  // \ backward diagonal 6 apart
-  // horizontal 1 apart
-  // vertical 7 apart
-
   const cellClick = (e) => {
     const cellID = e.target.id;
     const newCellColor = props.currentPlayer === 1 ? 'cadetblue' : 'red';
-    // console.log(cellID);
-    // if (cellColor === 'white') {
+
     // if unfilled, set color, switch current player
     setCellColor(newCellColor);
 
-    console.log('filled', props.filledCells, 'cellid', cellID);
+    // console.log('filled', props.filledCells, 'cellid', cellID);
     for (const col of allCols) {
       if (col.includes(cellID)) {
         let bottomCell = col
@@ -36,6 +30,9 @@ function Cell(props) {
         document.getElementById(bottomCell).style.backgroundColor =
           newCellColor;
         props.onClick(props.filledCells.push(bottomCell));
+        props.currentPlayer === 1
+          ? props.onClick(props.blueCells.push(bottomCell))
+          : props.onClick(props.redCells.push(bottomCell));
       }
     }
 
@@ -43,12 +40,7 @@ function Cell(props) {
   };
 
   return (
-    <div
-      id={props.id}
-      onClick={(e) => cellClick(e)}
-      className="Cell"
-      // style={{ backgroundColor: cellColor }}
-    ></div>
+    <div id={props.id} onClick={(e) => cellClick(e)} className="Cell"></div>
   );
 }
 
