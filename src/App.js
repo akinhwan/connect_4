@@ -8,14 +8,31 @@ function App() {
   const [blueCells, setBlueCells] = useState([]);
   const [redCells, setRedCells] = useState([]);
 
-  const handleCellClick = () => {
-    // console.log(currentPlayer);
-    // console.log(filledCells);
+  const col1 = ['0', '7', '14', '21', '28', '35'];
+  const col2 = ['1', '8', '15', '22', '29', '36'];
+  const col3 = ['2', '9', '16', '23', '30', '37'];
+  const col4 = ['3', '10', '17', '24', '31', '38'];
+  const col5 = ['4', '11', '18', '25', '32', '39'];
+  const col6 = ['5', '12', '19', '26', '33', '40'];
+  const col7 = ['6', '13', '20', '27', '34', '41'];
 
-    // / forward diagonal 8 apart
-    // \ backward diagonal 6 apart
-    // horizontal 1 apart
-    // vertical 7 apart
+  const allCols = [col1, col2, col3, col4, col5, col6, col7];
+
+  const handleCellClick = (cellID, newCellColor) => {
+    // fill in cells from the bottom up
+    for (const col of allCols) {
+      if (col.includes(cellID)) {
+        let bottomCell = col.filter((x) => !filledCells.includes(x)).pop();
+        document.getElementById(bottomCell).style.backgroundColor =
+          newCellColor;
+        filledCells.push(bottomCell);
+        currentPlayer === 1
+          ? blueCells.push(bottomCell)
+          : redCells.push(bottomCell);
+      }
+    }
+
+    // / forward diagonal 8 apart, \ backward diagonal 6 apart, horizontal 1 apart, vertical 7 apart
 
     // if redCells contains 4 consecutive numbers that increment regularly by 1, 6, 7, or 8
     console.log('red', redCells, 'blue', blueCells);
@@ -35,8 +52,11 @@ function App() {
           redCells.includes((Number(cell) + 24).toString()))
       ) {
         alert('red win');
+        restartGame();
       }
     }
+
+    // if blueCells contains 4 consecutive numbers that increment regularly by 1, 6, 7, or 8
     for (const cell of blueCells.sort()) {
       if (
         (blueCells.includes((Number(cell) + 1).toString()) &&
@@ -53,12 +73,18 @@ function App() {
           blueCells.includes((Number(cell) + 24).toString()))
       ) {
         alert('blue win');
+        restartGame();
       }
     }
 
-    // if blueCells contains 4 consecutive numbers that increment regularly by 1, 6, 7, or 8
-
     setCurrentPlayer(currentPlayer === 1 ? 2 : 1);
+  };
+
+  const restartGame = () => {
+    setFilledCells([]);
+    setBlueCells([]);
+    setRedCells([]);
+    setCurrentPlayer(1);
   };
 
   return (
@@ -68,7 +94,7 @@ function App() {
           <Cell
             id={i}
             key={i}
-            onClick={handleCellClick}
+            handleCellClick={handleCellClick}
             currentPlayer={currentPlayer}
             filledCells={filledCells}
             blueCells={blueCells}
