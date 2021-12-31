@@ -1,23 +1,31 @@
-import logo from './logo.svg';
 import './App.css';
+import Cell from './Cell';
+import { useState } from 'react';
 
 function App() {
+  const [currentPlayer, setCurrentPlayer] = useState(1);
+  const [filledCells, setFilledCells] = useState([]);
+
+  const switchPlayers = () => {
+    // console.log(currentPlayer);
+    // console.log(filledCells);
+
+    setCurrentPlayer(currentPlayer === 1 ? 2 : 1);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="Board">
+        {[...Array(42)].map((x, i) => (
+          <Cell
+            id={i}
+            key={i}
+            onClick={switchPlayers}
+            currentPlayer={currentPlayer}
+            filledCells={filledCells}
+          />
+        ))}
+      </div>
     </div>
   );
 }
