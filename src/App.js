@@ -1,16 +1,21 @@
 import './App.css';
 import Cell from './Cell';
 import { useState } from 'react';
+import sound1 from './cell.mp3';
+import sound2 from './sound3.mp3';
 
 function App() {
+  let player1Sound = new Audio(sound1);
+  let player2Sound = new Audio(sound2);
   const [currentPlayer, setCurrentPlayer] = useState(1);
   const [filledCells, setFilledCells] = useState([]);
   const [blueCells, setBlueCells] = useState([]);
   const [redCells, setRedCells] = useState([]);
   const [victoryMessage, setVictoryMessage] = useState('');
 
-  const player1Color = 'cadetblue';
-  const player2Color = 'red';
+  const player1Color = '#007eff';
+  const player2Color = '#e72c2c';
+  const emptyCellColor = '#ececec';
 
   const col1 = ['0', '7', '14', '21', '28', '35'];
   const col2 = ['1', '8', '15', '22', '29', '36'];
@@ -23,6 +28,8 @@ function App() {
   const allCols = [col1, col2, col3, col4, col5, col6, col7];
 
   const handleCellClick = (cellID, newCellColor) => {
+    currentPlayer === 1 ? player1Sound.play() : player2Sound.play();
+
     // fill in cells from the bottom up
     for (const col of allCols) {
       if (col.includes(cellID)) {
@@ -37,13 +44,10 @@ function App() {
     }
 
     // / forward diagonal 8 apart, \ backward diagonal 6 apart, horizontal 1 apart, vertical 7 apart
-
-    // if redCells contains 4 consecutive numbers that increment regularly by 1, 6, 7, or 8
-    console.log('red', redCells, 'blue', blueCells);
+    // if redCells/blueCells contains 4 consecutive numbers that increment regularly by 1, 6, 7, or 8
     checkVictory(redCells, 'Red', player2Color);
-
-    // if blueCells contains 4 consecutive numbers that increment regularly by 1, 6, 7, or 8
     checkVictory(blueCells, 'Blue', player1Color);
+
     setCurrentPlayer(currentPlayer === 1 ? 2 : 1);
   };
 
@@ -84,7 +88,7 @@ function App() {
 
   const restartGame = () => {
     filledCells.map(
-      (x) => (document.getElementById(x).style.backgroundColor = 'white')
+      (x) => (document.getElementById(x).style.backgroundColor = emptyCellColor)
     );
     setFilledCells([]);
     setBlueCells([]);
