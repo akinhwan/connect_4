@@ -1,15 +1,10 @@
 import './Cell.css';
-// import { useState } from 'react';
 
 function Cell(props) {
-  // const [cellColor, setCellColor] = useState('white');
-
   const cellClick = (e) => {
     const cellID = e.target.id;
-    const newCellColor = props.currentPlayer === 1 ? 'cadetblue' : 'red';
-
-    // if unfilled, set color, switch current player
-    // setCellColor(newCellColor);
+    const newCellColor =
+      props.currentPlayer === 1 ? props.player1Color : props.player2Color;
 
     props.handleCellClick(cellID, newCellColor);
   };

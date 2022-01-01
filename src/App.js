@@ -7,6 +7,10 @@ function App() {
   const [filledCells, setFilledCells] = useState([]);
   const [blueCells, setBlueCells] = useState([]);
   const [redCells, setRedCells] = useState([]);
+  const [victoryMessage, setVictoryMessage] = useState('');
+
+  const player1Color = 'cadetblue';
+  const player2Color = 'red';
 
   const col1 = ['0', '7', '14', '21', '28', '35'];
   const col2 = ['1', '8', '15', '22', '29', '36'];
@@ -36,48 +40,46 @@ function App() {
 
     // if redCells contains 4 consecutive numbers that increment regularly by 1, 6, 7, or 8
     console.log('red', redCells, 'blue', blueCells);
-    for (const cell of redCells.sort()) {
-      if (
-        (redCells.includes((Number(cell) + 1).toString()) &&
-          redCells.includes((Number(cell) + 2).toString()) &&
-          redCells.includes((Number(cell) + 3).toString())) ||
-        (redCells.includes((Number(cell) + 6).toString()) &&
-          redCells.includes((Number(cell) + 12).toString()) &&
-          redCells.includes((Number(cell) + 18).toString())) ||
-        (redCells.includes((Number(cell) + 7).toString()) &&
-          redCells.includes((Number(cell) + 14).toString()) &&
-          redCells.includes((Number(cell) + 21).toString())) ||
-        (redCells.includes((Number(cell) + 8).toString()) &&
-          redCells.includes((Number(cell) + 16).toString()) &&
-          redCells.includes((Number(cell) + 24).toString()))
-      ) {
-        alert('red win');
-        restartGame();
-      }
-    }
+    checkVictory(redCells, 'Red', player2Color);
 
     // if blueCells contains 4 consecutive numbers that increment regularly by 1, 6, 7, or 8
-    for (const cell of blueCells.sort()) {
+    checkVictory(blueCells, 'Blue', player1Color);
+    setCurrentPlayer(currentPlayer === 1 ? 2 : 1);
+  };
+
+  const checkVictory = (playersCells, colorText, backgroundColor) => {
+    for (const cell of playersCells.sort()) {
       if (
-        (blueCells.includes((Number(cell) + 1).toString()) &&
-          blueCells.includes((Number(cell) + 2).toString()) &&
-          blueCells.includes((Number(cell) + 3).toString())) ||
-        (blueCells.includes((Number(cell) + 6).toString()) &&
-          blueCells.includes((Number(cell) + 12).toString()) &&
-          blueCells.includes((Number(cell) + 18).toString())) ||
-        (blueCells.includes((Number(cell) + 7).toString()) &&
-          blueCells.includes((Number(cell) + 14).toString()) &&
-          blueCells.includes((Number(cell) + 21).toString())) ||
-        (blueCells.includes((Number(cell) + 8).toString()) &&
-          blueCells.includes((Number(cell) + 16).toString()) &&
-          blueCells.includes((Number(cell) + 24).toString()))
+        (playersCells.includes((Number(cell) + 1).toString()) &&
+          playersCells.includes((Number(cell) + 2).toString()) &&
+          playersCells.includes((Number(cell) + 3).toString())) ||
+        (playersCells.includes((Number(cell) + 6).toString()) &&
+          playersCells.includes((Number(cell) + 12).toString()) &&
+          playersCells.includes((Number(cell) + 18).toString())) ||
+        (playersCells.includes((Number(cell) + 7).toString()) &&
+          playersCells.includes((Number(cell) + 14).toString()) &&
+          playersCells.includes((Number(cell) + 21).toString())) ||
+        (playersCells.includes((Number(cell) + 8).toString()) &&
+          playersCells.includes((Number(cell) + 16).toString()) &&
+          playersCells.includes((Number(cell) + 24).toString()))
       ) {
-        alert('blue win');
-        restartGame();
+        setVictoryMessage(`${colorText} Wins!`);
+        const modal = document.getElementsByClassName('Modal')[0];
+        const board = document.getElementsByClassName('Board')[0];
+
+        modal.style.visibility = 'initial';
+        modal.style.backgroundColor = `${backgroundColor}`;
+        board.style.filter = 'brightness(0.5)';
+        board.style.pointerEvents = 'none';
+
+        setTimeout(() => {
+          restartGame();
+          modal.style.visibility = 'hidden';
+          board.style.filter = 'none';
+          board.style.pointerEvents = 'auto';
+        }, 2000);
       }
     }
-
-    setCurrentPlayer(currentPlayer === 1 ? 2 : 1);
   };
 
   const restartGame = () => {
@@ -92,6 +94,7 @@ function App() {
 
   return (
     <div className="App">
+      <div className="Modal">{victoryMessage}</div>
       <div className="Board">
         {[...Array(42)].map((x, i) => (
           <Cell
@@ -102,6 +105,8 @@ function App() {
             filledCells={filledCells}
             blueCells={blueCells}
             redCells={redCells}
+            player1Color={player1Color}
+            player2Color={player2Color}
           />
         ))}
       </div>

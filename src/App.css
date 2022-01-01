@@ -11,3 +11,22 @@
   width: 88%;
   padding: 3vw 6vw;
 }
+
+.Modal {
+  visibility: hidden;
+  position: absolute;
+  z-index: 9;
+  width: 9rem;
+  margin: auto;
+  height: 2rem;
+  text-align: center;
+  left: 43vw;
+  padding: 2rem;
+  color: white;
+  top: 46vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 19px 38px rgba(0, 0, 0, 0.30), 0 15px 12px rgba(0, 0, 0, 0.22);
+
+}
