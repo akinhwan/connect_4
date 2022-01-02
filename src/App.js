@@ -98,6 +98,14 @@ function App() {
 
   return (
     <div className="App">
+      <div
+        className="Player"
+        style={{
+          backgroundColor: currentPlayer === 1 ? player1Color : player2Color,
+        }}
+      >
+        {currentPlayer === 1 ? 'Blue' : 'Red'}'s turn
+      </div>
       <div className="Modal">{victoryMessage}</div>
       <div className="Board">
         {[...Array(42)].map((x, i) => (
@@ -113,6 +121,11 @@ function App() {
             player2Color={player2Color}
           />
         ))}
+      </div>
+      <div className="Akinhwan">
+        <a href="https://www.akinhwan.com" target="_blank" rel="noreferrer">
+          Created by Andrew @akinhwan
+        </a>
       </div>
     </div>
   );

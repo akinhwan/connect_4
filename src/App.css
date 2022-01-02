@@ -28,3 +28,20 @@
   box-shadow: 0 19px 48px rgb(255 255 255 / 30%), 0 -35px 52px rgb(255 255 255 / 22%); */
 
 }
+
+.Akinhwan {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+.Akinhwan>a {
+  color: white;
+}
+
+.Player {
+  padding: 1px 5px;
+  font-size: 0.8rem;
+  position: absolute;
+  color: white;
+}
